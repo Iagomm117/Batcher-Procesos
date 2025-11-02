@@ -8,6 +8,11 @@ class resources {
     private int cpu_cores;
     private String memory;
 
+    public resources() {
+    }
+    
+    
+
     public resources(int cpu_cores, String memory) {
         this.cpu_cores = cpu_cores;
         this.memory = memory;

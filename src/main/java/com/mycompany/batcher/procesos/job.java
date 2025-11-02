@@ -9,9 +9,14 @@ public class job {
     private String name;
     private int priority;
     private resources resources;
-    private workload duration_ms;
+    private int duration_ms;
 
-    public job(String id, String name, int priority, resources resources, workload duration_ms) {
+    public job() {
+    }
+
+    
+    
+    public job(String id, String name, int priority, resources resources, int duration_ms) {
         this.id = id;
         this.name = name;
         this.priority = priority;
@@ -51,11 +56,11 @@ public class job {
         this.resources = resources;
     }
 
-    public workload getDuration_ms() {
+    public int getDuration_ms() {
         return duration_ms;
     }
 
-    public void setDuration_ms(workload duration_ms) {
+    public void setDuration_ms(int duration_ms) {
         this.duration_ms = duration_ms;
     }
     
