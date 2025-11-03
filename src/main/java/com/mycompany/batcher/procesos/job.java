@@ -1,27 +1,30 @@
 package com.mycompany.batcher.procesos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  *
  * @author iagom
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class job {
     private String id;
     private String name;
     private int priority;
     private resources resources;
-    private int duration_ms;
+    private workload workload;
 
     public job() {
     }
 
     
     
-    public job(String id, String name, int priority, resources resources, int duration_ms) {
+    public job(String id, String name, int priority, resources resources, workload workload) {
         this.id = id;
         this.name = name;
         this.priority = priority;
         this.resources = resources;
-        this.duration_ms = duration_ms;
+        this.workload = workload;
     }
 
     public String getId() {
@@ -56,13 +59,15 @@ public class job {
         this.resources = resources;
     }
 
-    public int getDuration_ms() {
-        return duration_ms;
+    public workload getWorkload() {
+        return workload;
     }
 
-    public void setDuration_ms(int duration_ms) {
-        this.duration_ms = duration_ms;
+    public void setWorkload(workload workload) {
+        this.workload = workload;
     }
+
+ 
     
     
     

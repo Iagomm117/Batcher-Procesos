@@ -7,6 +7,10 @@ package com.mycompany.batcher.procesos;
 class workload {
     private int duration_ms;
 
+    public workload(){
+        
+    }
+    
     public workload(int duration_ms) {
         this.duration_ms = duration_ms;
     }

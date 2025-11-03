@@ -16,7 +16,7 @@ public class LectorYAML {
     Reader yaml = new FileReader("src/main/resources/job.yaml");
     ObjectMapper mapper = new YAMLMapper();
     job job = mapper.readValue(yaml, job.class);
-        System.out.println(job.getId() + " " + job.getName() + " " + job.getPriority() + " " + job.getResources().getCpu_cores() + " " + job.getResources().getMemory()+ " " + job.getDuration_ms());
+        System.out.println(job.getId() + " " + job.getName() + " " + job.getPriority() + " " + job.getResources().getCpu_cores() + " " + job.getResources().getMemory()+ " " + job.getWorkload().getDuration_ms());
     }
     
     
