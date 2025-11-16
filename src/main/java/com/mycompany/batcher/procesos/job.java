@@ -13,11 +13,11 @@ public class job {
     private int priority;
     private resources resources;
     private workload workload;
+    private String state;
 
     public job() {
     }
 
-    
     
     public job(String id, String name, int priority, resources resources, workload workload) {
         this.id = id;
@@ -25,6 +25,7 @@ public class job {
         this.priority = priority;
         this.resources = resources;
         this.workload = workload;
+        this.state = "NEW";
     }
 
     public String getId() {
@@ -67,7 +68,14 @@ public class job {
         this.workload = workload;
     }
 
- 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    
     
     
     

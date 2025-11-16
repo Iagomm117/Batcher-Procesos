@@ -14,9 +14,12 @@ import java.io.Reader;
 public class LectorYAML {
     public static void leerFicheroYAML() throws FileNotFoundException, IOException{
     Reader yaml = new FileReader("src/main/resources/job.yaml");
+    
     ObjectMapper mapper = new YAMLMapper();
     job job = mapper.readValue(yaml, job.class);
+    if(job.getResources().getMemory().contains("MB") || job.getResources().getMemory().contains("GB")){
         System.out.println(job.getId() + " " + job.getName() + " " + job.getPriority() + " " + job.getResources().getCpu_cores() + " " + job.getResources().getMemory()+ " " + job.getWorkload().getDuration_ms());
+    }
     }
     
     
