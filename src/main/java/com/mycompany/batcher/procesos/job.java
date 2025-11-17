@@ -14,6 +14,7 @@ public class job {
     private resources resources;
     private workload workload;
     private String state;
+    private String arrivalTime;
 
     public job() {
     }
@@ -25,7 +26,6 @@ public class job {
         this.priority = priority;
         this.resources = resources;
         this.workload = workload;
-        this.state = "NEW";
     }
 
     public String getId() {

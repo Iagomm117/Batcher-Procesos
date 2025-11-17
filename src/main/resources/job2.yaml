@@ -1,0 +1,8 @@
+id: job-0002
+name: "Indexar informes"
+priority: 3
+resources:
+  cpu_cores: 1
+  memory: "0.256 GB"
+workload:
+  duration_ms: 12000
