@@ -14,7 +14,7 @@ public class job {
     private resources resources;
     private workload workload;
     private String state;
-    private String arrivalTime;
+    private long arrivalTime;
 
     public job() {
     }
@@ -75,6 +75,16 @@ public class job {
     public void setState(String state) {
         this.state = state;
     }
+
+    public long getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(long arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+    
+    
     
     
     
