@@ -1,8 +1,10 @@
 package com.mycompany.batcher.procesos;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -24,17 +26,38 @@ public class BatcherProcesos {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        LectorYAML.leerFicheroYAML(jobs);
-
-        for (int i = 0; i < jobs.size(); i++) {
-            job job = jobs.get(i);
-            cambiarEstado(job);
-            long pid = lanzarProcesoFCFS(job.getId(),job.getWorkload().getDuration_ms(),job.getResources().getCpu_cores(),job.getResources().getMemory(),job);
-            cambiarEstado(job);
-        }
+        menu();
 
     }
 
+    private static void menu() throws IOException, InterruptedException {
+        System.out.println("Elige le metodo para de planificaciónm de recursos");
+        System.out.println("1. FCFS");
+        System.out.println("2. Round Robin");
+        Scanner scan = new Scanner(System.in);
+        if (scan.nextInt() == 1) {
+            LectorYAML.leerFicheroYAML(jobs);
+
+            for (int i = 0; i < jobs.size(); i++) {
+                job job = jobs.get(i);
+                cambiarEstado(job);
+                long pid = lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
+                FCFS();
+                cambiarEstado(job);
+                monitorFCFS();
+            }
+        } else if (scan.nextInt() == 2) {
+            System.out.println("No se pudo hacer ya que no esta disponible");
+            System.exit(0);
+        }
+    }
+    
+    private static void monitorFCFS(){
+        System.out.println("┌───────────────────────────────────────────────────────────────────────────────┐");
+        System.out.println("│ BATCHER MONITOR · Política: FCFS                                    │");
+        System.out.println("├───────────────────────────────────────────────────────────────────────────────┤");
+        System.out.println("│ Recursos: CPU" +freeCpu +"/" + CPU_Cores+ "| RAM "+freeRAM+"/"+RAM+"MB  | Utilización CPU: "+  freeCpu*100/CPU_Cores+  "%"+            "│");
+    }
     private static void cambiarEstado(job job) {
         String[] aux = job.getResources().getMemory().split(" ");
         int memory = Integer.parseInt(aux[0]);
@@ -66,32 +89,30 @@ public class BatcherProcesos {
 
     }
 
-   public static long lanzarProcesoFCFS(String id, int duration_ms, int cpu_cores, String mem_mb, job job) throws IOException, InterruptedException{
-       String[] aux = mem_mb.split(" ");
-       int memory = Integer.parseInt(aux[0]);
-       String cp = System.getProperty("java.class.path");
-       ProcessBuilder pb = new ProcessBuilder("java","-cp",cp,"com.mycompany.batcher.procesos.WorkerMain",id,Integer.toString(duration_ms),Integer.toString(cpu_cores),mem_mb);
-       
-       pb.inheritIO();
-       
-       
-       Process p = pb.start();
-       p.waitFor();
-       if(p.exitValue() == 0){
-           running.remove(job);
-           doneList.add(job);
-           freeCpu = freeCpu + job.getResources().getCpu_cores();
-           freeRAM = freeRAM + memory;
-       }
-       else{
-           running.remove(job);
-           failedList.add(job);
-           freeCpu = freeCpu + job.getResources().getCpu_cores();
-           freeRAM = freeRAM + memory;
-       }
-       endTime = System.currentTimeMillis();
-      
-       return p.pid();
-       
-   }
+    public static long lanzarProcesoFCFS(String id, int duration_ms, int cpu_cores, String mem_mb, job job) throws IOException, InterruptedException {
+        String[] aux = mem_mb.split(" ");
+        int memory = Integer.parseInt(aux[0]);
+        String cp = System.getProperty("java.class.path");
+        ProcessBuilder pb = new ProcessBuilder("java", "-cp", cp, "com.mycompany.batcher.procesos.WorkerMain", id, Integer.toString(duration_ms), Integer.toString(cpu_cores), mem_mb);
+
+        pb.inheritIO();
+
+        Process p = pb.start();
+        p.waitFor();
+        if (p.exitValue() == 0) {
+            running.remove(job);
+            doneList.add(job);
+            freeCpu = freeCpu + job.getResources().getCpu_cores();
+            freeRAM = freeRAM + memory;
+        } else {
+            running.remove(job);
+            failedList.add(job);
+            freeCpu = freeCpu + job.getResources().getCpu_cores();
+            freeRAM = freeRAM + memory;
+        }
+        endTime = System.currentTimeMillis();
+
+        return p.pid();
+
+    }
 }
