@@ -25,13 +25,13 @@ public class BatcherProcesos {
     private static long endTime;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
+            
         menu();
 
     }
 
     private static void menu() throws IOException, InterruptedException {
-        System.out.println("Elige le metodo para de planificaciónm de recursos");
+        System.out.println("Elige le metodo para de planificacion de recursos");
         System.out.println("1. FCFS");
         System.out.println("2. Round Robin");
         Scanner scan = new Scanner(System.in);
@@ -41,10 +41,13 @@ public class BatcherProcesos {
             for (int i = 0; i < jobs.size(); i++) {
                 job job = jobs.get(i);
                 cambiarEstado(job);
-                long pid = lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
                 FCFS();
-                cambiarEstado(job);
+                long pid = lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
+                
+                
                 monitorFCFS();
+                cambiarEstado(job);
+                
             }
         } else if (scan.nextInt() == 2) {
             System.out.println("No se pudo hacer ya que no esta disponible");
@@ -53,10 +56,17 @@ public class BatcherProcesos {
     }
     
     private static void monitorFCFS(){
-        System.out.println("┌───────────────────────────────────────────────────────────────────────────────┐");
-        System.out.println("│ BATCHER MONITOR · Política: FCFS                                    │");
-        System.out.println("├───────────────────────────────────────────────────────────────────────────────┤");
-        System.out.println("│ Recursos: CPU" +freeCpu +"/" + CPU_Cores+ "| RAM "+freeRAM+"/"+RAM+"MB  | Utilización CPU: "+  freeCpu*100/CPU_Cores+  "%"+            "│");
+        System.out.print("_______________________________________________\n");
+        System.out.print("| BATCHER MONITOR - Politica: FCFS            |\n");
+        System.out.print("_______________________________________________\n");
+        System.out.println("| Recursos: CPU " + (freeCpu) + "/" + CPU_Cores + "  | RAM " + (freeRAM) + "/" + RAM +"MB          |\n");
+        System.out.print("_______________________________________________\n");
+        System.out.println("| READY   (" +readyList.size()+")             |");
+        System.out.println("| WAITING (" + waitingList.size()+")          |");
+        System.out.println("| DONE     ("+ doneList.size()+")             |");
+        System.out.println("| FAILED   (" + failedList.size()+")          |");
+        System.out.println("| RUNNING   (" + running.size()+")          |");
+        
     }
     private static void cambiarEstado(job job) {
         String[] aux = job.getResources().getMemory().split(" ");
