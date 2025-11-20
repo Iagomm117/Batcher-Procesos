@@ -35,23 +35,26 @@ public class BatcherProcesos {
         System.out.println("1. FCFS");
         System.out.println("2. Round Robin");
         Scanner scan = new Scanner(System.in);
-        if (scan.nextInt() == 1) {
+        int numero = scan.nextInt();
+        if (numero == 1) {
             LectorYAML.leerFicheroYAML(jobs);
 
             for (int i = 0; i < jobs.size(); i++) {
                 job job = jobs.get(i);
                 cambiarEstado(job);
                 FCFS();
-                long pid = lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
-                
-                
+                lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
                 monitorFCFS();
                 cambiarEstado(job);
                 
             }
-        } else if (scan.nextInt() == 2) {
+        } else if (numero == 2) {
             System.out.println("No se pudo hacer ya que no esta disponible");
             System.exit(0);
+        }
+        else{
+            System.err.print("Lo que se ha introducido no esta en el menu");
+            System.exit(-1);
         }
     }
     
@@ -99,7 +102,7 @@ public class BatcherProcesos {
 
     }
 
-    public static long lanzarProcesoFCFS(String id, int duration_ms, int cpu_cores, String mem_mb, job job) throws IOException, InterruptedException {
+    public static void lanzarProcesoFCFS(String id, int duration_ms, int cpu_cores, String mem_mb, job job) throws IOException, InterruptedException {
         String[] aux = mem_mb.split(" ");
         int memory = Integer.parseInt(aux[0]);
         String cp = System.getProperty("java.class.path");
@@ -120,9 +123,6 @@ public class BatcherProcesos {
             freeCpu = freeCpu + job.getResources().getCpu_cores();
             freeRAM = freeRAM + memory;
         }
-        endTime = System.currentTimeMillis();
-
-        return p.pid();
 
     }
 }

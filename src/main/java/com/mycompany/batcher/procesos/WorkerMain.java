@@ -12,7 +12,7 @@ public class WorkerMain {
             int s = (int) (ms / 1000);
             for (int i = 1; i < s; i++) {
                 Thread.sleep(i* 1000);
-                System.out.println("jobId: " + args[0] + ", progress " + (double) i*100/s);
+                //System.out.println("jobId: " + args[0] + ", progress " + (double) i*100/s);
                 System.exit(0);
             }
         }
