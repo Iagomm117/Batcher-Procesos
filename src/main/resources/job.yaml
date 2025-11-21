@@ -4,5 +4,7 @@ priority: 2
 resources:
   cpu_cores: 1
   memory: "256 MB"
+  asdasd:
 workload:
+
   duration_ms: 15000

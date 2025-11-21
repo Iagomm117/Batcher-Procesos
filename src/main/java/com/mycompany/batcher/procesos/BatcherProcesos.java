@@ -25,7 +25,7 @@ public class BatcherProcesos {
     private static long endTime;
 
     public static void main(String[] args) throws IOException, InterruptedException {
-            
+
         menu();
 
     }
@@ -42,35 +42,61 @@ public class BatcherProcesos {
             for (int i = 0; i < jobs.size(); i++) {
                 job job = jobs.get(i);
                 cambiarEstado(job);
+                System.out.println(job.toString());
+                monitorFCFS();
                 FCFS();
                 lanzarProcesoFCFS(job.getId(), job.getWorkload().getDuration_ms(), job.getResources().getCpu_cores(), job.getResources().getMemory(), job);
-                monitorFCFS();
-                cambiarEstado(job);
                 
+                cambiarEstado(job);
+
             }
         } else if (numero == 2) {
             System.out.println("No se pudo hacer ya que no esta disponible");
             System.exit(0);
-        }
-        else{
+        } else {
             System.err.print("Lo que se ha introducido no esta en el menu");
             System.exit(-1);
         }
     }
-    
-    private static void monitorFCFS(){
-        System.out.print("_______________________________________________\n");
-        System.out.print("| BATCHER MONITOR - Politica: FCFS            |\n");
-        System.out.print("_______________________________________________\n");
-        System.out.println("| Recursos: CPU " + (freeCpu) + "/" + CPU_Cores + "  | RAM " + (freeRAM) + "/" + RAM +"MB          |\n");
-        System.out.print("_______________________________________________\n");
-        System.out.println("| READY   (" +readyList.size()+")             |");
-        System.out.println("| WAITING (" + waitingList.size()+")          |");
-        System.out.println("| DONE     ("+ doneList.size()+")             |");
-        System.out.println("| FAILED   (" + failedList.size()+")          |");
-        System.out.println("| RUNNING   (" + running.size()+")          |");
-        
+
+    private static void monitorFCFS() {
+        System.out.println("=== MONITOR ===");
+
+        System.out.println("CPU: " + (CPU_Cores-freeCpu) + "/" + CPU_Cores);
+        System.out.println("RAM: " + (RAM-freeRAM) + "/" + RAM + " MB");
+        System.out.println();
+
+        System.out.println("READY (" + readyList.size() + "):");
+        for (job p : readyList) {
+            System.out.println(" - " + p.getId());
+        }
+
+        System.out.println("WAITING (" + waitingList.size() + "):");
+        for (job p : waitingList) {
+            System.out.println(" - " + p.getId());
+        }
+
+        System.out.println("RUNNING (" + running.size() + "):");
+        for (job p : running) {
+            System.out.println(" - " + p.getId()
+                    + " | cores=" + p.getResources().getCpu_cores()
+                    + " | mem=" + p.getResources().getMemory() + "MB");
+        }
+
+        System.out.println("DONE (" + doneList.size() + "):");
+        for (job p : doneList) {
+            System.out.println(" - " + p.getId());
+        }
+
+        System.out.println("FAILED (" + failedList.size() + "):");
+        for (job p : failedList) {
+            System.out.println(" - " + p.getId());
+        }
+
+        System.out.println("================");
+
     }
+
     private static void cambiarEstado(job job) {
         String[] aux = job.getResources().getMemory().split(" ");
         int memory = Integer.parseInt(aux[0]);

@@ -83,6 +83,11 @@ public class job {
     public void setArrivalTime(long arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
+
+    @Override
+    public String toString() {
+        return "id:" + id +" priority:" + priority + " CPU:" + resources.getCpu_cores() + " RAM:" + resources.getMemory() +" milisegundos:" + workload.getDuration_ms() + " state:" + state;
+    }
     
     
     
